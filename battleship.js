@@ -56,7 +56,7 @@ $(document).ready(function(){
   function printBoard() {
     var boardOut = "";
     for(var i = 0; i < boardSize; i++) {
-      boardOut += board[i];
+      boardOut += board[i] + ' ';
     }
     $("#board").text(boardOut);
   }
@@ -85,6 +85,7 @@ $(document).ready(function(){
 
     // Verify the guess is in a valid range
     if (guess < 0 || guess > boardSize - 1) {
+      $('#guess-result').text('Please guess a number between 0 and ' + (boardSize - 1) + '!');
       return;
     }
 
