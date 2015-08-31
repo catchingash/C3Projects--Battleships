@@ -63,7 +63,13 @@ $(document).ready(function(){
 
   function endGame() {
     // TODO: End game
+    gameOver = true;
+    var message = (hits >= shipNum) ? 'YOU WIN!' : 'YOU LOSE!';
+    $('#end-game').text(message);
+
     // ADDED FUN: Disable submit button
+    $('#submit').attr('disabled', true);
+
     console.log("End game");
   }
 
@@ -72,19 +78,39 @@ $(document).ready(function(){
 
   function userGuess(){
     // Retrieve the guess from the input box
+    guess = $('#guess').val();
 
     // Reset the guess input box
+    $('#guess').val('');
 
     // Verify the guess is in a valid range
+    if (guess < 0 || guess > boardSize - 1) {
+      return;
+    }
 
     // Check if the guess matches one of our ships locations
-    // If it does, mark is as a HIT
-    // If it doesn't, mark it as a MISS
+    if (ships.indexOf(parseInt(guess)) >= 0) {
+      // If it does, mark is as a HIT
+      board[guess] = 'X';
+      hits += 1;
+      $('#guess-result').text('HIT!');
+    } else {
+      // If it doesn't, mark it as a MISS
+      board[guess] = '-';
+      $('#guess-result').text('MISS!');
+    }
+
+    guesses += 1;
 
     // Continue gameplay
     // Redraw the board if it has changed
+      printBoard();
     // Tell the user how many guesses they've made
+      $('#guess-count').text('Num guesses: ' + guesses);
 
     // NOTE: How does the game end?
+    if (guesses >= 5 || hits >= shipNum) {
+      endGame();
+    }
   }
 });
